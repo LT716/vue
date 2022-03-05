@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收集表单</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.4.1/dayjs.min.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>现在是:{{gettime() | timeFormater}}</h2>
+        <form @submit='demo'>
+            账号:<input type="account" v-model="account"><br><br>
+            密码:<input type="password" v-model="password"><br><br>
+            性别:
+            男<input type="radio" name="sex" v-model="sex" value="male">
+            女<input type="radio" name="sex" v-model="sex" value="female"><br><br>
+            爱好:
+            学习<input type="checkbox" v-model="hobby" value="study">
+            打游戏<input type="checkbox" v-model="hobby" value="game">
+            吃饭<input type="checkbox" v-model="hobby" value="eat"><br><br>
+            所属校区
+            <select v-model='city'>
+                <option value="">请选择校区</option>
+                <option value="wuhan">武汉</option>
+                <option value="beijing">北京</option>
+                <option value="shenzhen">深圳</option>
+            </select><br><br>
+            其它信息:
+            <textarea v-model.lazy='other'></textarea>
+            <br><br>
+            <input type="checkbox" v-model='agree'>阅读并接受用户协议<a href="https://www.baidu.com">《用户协议》</a>
+            <button>提交</button>
+        </form>
+        <h2>当前的n值是: <span v-text="n"></span></h2>
+        <h2>放大10倍的n值是: <span v-big="n"></span></h2>
+        <hr>
+        <input type="text" v-fbind:value='n'>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false
+</script>
+
+<script type="text/javascript">
+    new Vue({
+        el: '#root',
+        data: {
+            n:"10",
+            time: '',
+            account: '',
+            password: '',
+            sex: '',
+            hobby: [],
+            city: 'beijing',
+            other: '',
+            agree: false
+
+        },
+        methods: {
+            demo() {
+                console.log(JSON.stringify(this._data)),
+                    alert("提交成功!")
+            },
+            gettime() {
+                console.log(Date.now())
+                return Date.now()
+            }
+        },
+        filters: {
+            timeFormater(value) {
+                // console.log(dayjs)
+                return dayjs(value).format('YYYY年MM月DD日 HH:mm:ss')
+            }
+        },
+        directives:{
+            big(element,binding){
+                element.innerText = binding.value * 10
+            },
+            fbind(element,binding){
+                element.value = binding.value
+                
+            }
+        }
+    })
+</script>
+
+
+
+</html>
