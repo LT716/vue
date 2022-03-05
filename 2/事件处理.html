@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .basic{
+            width: 800px;
+            height: 500px;
+            color: #085;
+            background: #0456;
+        }
+    </style>
+    <title>事件处理</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <div class = "basic">
+            <h2>dianji</h2>
+            <!-- <button v-on:click="showInfo">dianjitishi</button> -->
+            <button @click="showInfo(66,$event)">dianjitishi</button>
+            <a href="https://www.baidu.com" @click.once.prevent = "showInfo">132</a>
+            <input type="text" placeholder="按下回车提示" @keyup="showInfo1"><br/><br/>
+            姓: <input type="text" v-model="first_name"><br/><br/>
+            名: <input type="text" v-model="last_name"><br/><br/>
+            全名: <span>{{full_name}}</span><br/><br/>
+            <h2 v-if = "false">hello</h2>
+            <h2>当前的n是{{n}}</h2>
+            <button @click = "n++">点我n++</button>
+            <h2 v-if="n==24">n现在是24</h2>
+            <h2 v-else-if="n==26">n现在是26</h2>
+            <h2 v-else-if="n==25">n现在是25</h2>
+            <button @click.once = "add">点击添加一个用户</button><br><br>
+        </div> 
+
+        <input type="text" placeholder="输入名字" v-model="keyWord">
+        <button @click="sortType=2">升序</button>
+        <button @click="sortType=1">降序</button>
+        <button @click="sortType=0">原序</button>
+        <ul>
+            <li v-for="(person,index) in filpersons" :key="index">{{person.name}}-{{person.age}}</li>
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+        Vue.config.productionTip = false
+    
+        new Vue({
+            el:'#root',
+            data:{
+                keyWord:'',
+                sortType : 0,
+                name:'lengnuan',
+                first_name:'',
+                last_name:'',
+                full_name:'',
+                n:23,
+                persons:[
+                    {id:'001',name:'张三',age:'23'},
+                    {id:'002',name:'李四',age:'20'},
+                    {id:'003',name:'王五',age:'22'},
+                ],
+                // filpersons:[]
+            },
+            methods:{
+                showInfo(number,event){
+                    // console.log(number,event)
+                    // console.log(a,b,c,d)
+                    alert('nihao')
+                },
+                showInfo1(e){                 
+                    // if(e.keyCode != 13) return
+                    console.log(e.key,e.keyCode)
+                },
+                add(){
+                    const p ={id:'004',name:'冷暖',age:'24'}
+                    this.persons.unshift(p)
+                }
+            },
+            computed:{
+                filpersons(){
+                    const arr = this.persons.filter((p)=>{
+                        return p.name.indexOf(this.keyWord) != -1
+                    })
+                    if(this.sortType){
+                        arr.sort((p1,p2)=>{
+                            return this.sortType == 1 ? p2.age-p1.age : p1.age-p2.age
+                        })
+                    }
+                    return arr
+                }
+            },
+            watch:{
+                // keyWord:{
+                //     immediate:true,
+                //     handler(val){
+                //         this.filpersons = this.persons.filter((p)=>{
+                //             return p.name.indexOf(val) != -1 
+                //         }),
+                //         console.log('change',val) 
+                //     }
+                // },
+                first_name(newValue,oldValue){
+                    setTimeout( () => {
+                        this.full_name = newValue +'-'+this.last_name
+                    },1000);
+                },
+            }
+        })
+    </script>
+</body>
+
+
+</html>
